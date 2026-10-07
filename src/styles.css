@@ -1677,3 +1677,62 @@ textarea.field {
     color: inherit;
   }
 }
+
+/* QA polish: portfolio table */
+.portfolio-table-scroll {
+  max-height: 560px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+}
+.portfolio-table-scroll .data-table {
+  min-width: 1040px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.portfolio-table-scroll .data-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-top: 0;
+}
+.portfolio-table-scroll .data-table td {
+  background: var(--card);
+}
+.portfolio-table-scroll .data-table tbody tr:hover td {
+  background: color-mix(in oklab, var(--muted) 65%, var(--card));
+}
+.portfolio-table-scroll .col-service {
+  width: 128px;
+  min-width: 128px;
+}
+.portfolio-table-scroll .sticky-check,
+.portfolio-table-scroll .sticky-client,
+.portfolio-table-scroll .sticky-type {
+  position: sticky;
+  z-index: 1;
+}
+.portfolio-table-scroll th.sticky-check,
+.portfolio-table-scroll th.sticky-client,
+.portfolio-table-scroll th.sticky-type {
+  z-index: 3;
+}
+.portfolio-table-scroll .sticky-check { left: 0; width: 44px; min-width: 44px; }
+.portfolio-table-scroll .sticky-client { left: 44px; width: 240px; min-width: 240px; max-width: 240px; }
+.portfolio-table-scroll .sticky-type {
+  left: 284px;
+  width: 104px;
+  min-width: 104px;
+  box-shadow: 1px 0 0 var(--border), 6px 0 8px -6px oklch(0.2 0 0 / 0.08);
+}
+.client-cell > div { min-width: 0; }
+.client-cell strong, .client-cell small { overflow: hidden; text-overflow: ellipsis; }
+.client-cell .avatar { flex-shrink: 0; }
+/* Focus & hover */
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.client-cell:hover strong { color: var(--primary); }
+.firm-switch select { cursor: pointer; }

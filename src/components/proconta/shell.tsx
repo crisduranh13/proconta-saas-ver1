@@ -62,11 +62,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </span>
           <span className="version">v1</span>
         </Link>
-        <div className="firm-switch">
+        <div className="firm-switch" title={firm}>
           <div className="firm-avatar">DV</div>
           <div>
             <small>Tu despacho</small>
-            <select aria-label="Despacho" value={firm} onChange={(e) => setFirm(e.target.value)}>
+            <select aria-label="Despacho" title={firm} value={firm} onChange={(e) => setFirm(e.target.value)}>
               <option>{demo.firm}</option>
               <option>Despacho DEMO Centro</option>
             </select>
