@@ -19,6 +19,7 @@ import { Route as DecisionesRouteImport } from './routes/decisiones'
 import { Route as EntregablesRouteImport } from './routes/entregables'
 import { Route as HistorialRouteImport } from './routes/historial'
 import { Route as ProcesosRouteImport } from './routes/procesos'
+import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
 import { Route as ClientesClientIdRouteImport } from './routes/clientes.$clientId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -71,6 +72,11 @@ const ProcesosRoute = ProcesosRouteImport.update({
   path: '/procesos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientesIndexRoute = ClientesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClientesRoute,
+} as any)
 const ClientesClientIdRoute = ClientesClientIdRouteImport.update({
   id: '/$clientId',
   path: '/$clientId',
@@ -89,11 +95,11 @@ export interface FileRoutesByFullPath {
   '/historial': typeof HistorialRoute
   '/procesos': typeof ProcesosRoute
   '/clientes/$clientId': typeof ClientesClientIdRoute
+  '/clientes/': typeof ClientesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/archivos': typeof ArchivosRoute
-  '/clientes': typeof ClientesRouteWithChildren
   '/conciliacion': typeof ConciliacionRoute
   '/configuracion': typeof ConfiguracionRoute
   '/cuentas-por-cobrar': typeof CuentasPorCobrarRoute
@@ -102,6 +108,7 @@ export interface FileRoutesByTo {
   '/historial': typeof HistorialRoute
   '/procesos': typeof ProcesosRoute
   '/clientes/$clientId': typeof ClientesClientIdRoute
+  '/clientes': typeof ClientesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +123,7 @@ export interface FileRoutesById {
   '/historial': typeof HistorialRoute
   '/procesos': typeof ProcesosRoute
   '/clientes/$clientId': typeof ClientesClientIdRoute
+  '/clientes/': typeof ClientesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,11 +139,11 @@ export interface FileRouteTypes {
     | '/historial'
     | '/procesos'
     | '/clientes/$clientId'
+    | '/clientes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/archivos'
-    | '/clientes'
     | '/conciliacion'
     | '/configuracion'
     | '/cuentas-por-cobrar'
@@ -144,6 +152,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/procesos'
     | '/clientes/$clientId'
+    | '/clientes'
   id:
     | '__root__'
     | '/'
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/procesos'
     | '/clientes/$clientId'
+    | '/clientes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -244,6 +254,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProcesosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clientes/': {
+      id: '/clientes/'
+      path: '/'
+      fullPath: '/clientes/'
+      preLoaderRoute: typeof ClientesIndexRouteImport
+      parentRoute: typeof ClientesRoute
+    }
     '/clientes/$clientId': {
       id: '/clientes/$clientId'
       path: '/$clientId'
@@ -256,10 +273,12 @@ declare module '@tanstack/react-router' {
 
 interface ClientesRouteChildren {
   ClientesClientIdRoute: typeof ClientesClientIdRoute
+  ClientesIndexRoute: typeof ClientesIndexRoute
 }
 
 const ClientesRouteChildren: ClientesRouteChildren = {
   ClientesClientIdRoute: ClientesClientIdRoute,
+  ClientesIndexRoute: ClientesIndexRoute,
 }
 
 const ClientesRouteWithChildren = ClientesRoute._addFileChildren(
