@@ -1,10 +1,293 @@
-import { Link, useRouterState, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
-import { LayoutGrid, UsersRound, Workflow, FolderOpen, ClipboardCheck, PackageCheck, History, Settings2, ChevronsUpDown, ChevronDown, Bell, Search, LogOut, CircleHelp, Command, X, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { demo, clients, decisions } from '@/lib/proconta/demo';
-import { useWorkspace } from '@/lib/proconta/context';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-const navigation=[{to:'/',label:'Dashboard',icon:LayoutGrid},{to:'/clientes',label:'Clientes',icon:UsersRound},{to:'/procesos',label:'Procesos',icon:Workflow},{to:'/archivos',label:'Archivos',icon:FolderOpen},{to:'/decisiones',label:'Decisiones pendientes',icon:ClipboardCheck,count:'12'},{to:'/entregables',label:'Entregables',icon:PackageCheck},{to:'/historial',label:'Historial / Auditoría',icon:History},{to:'/configuracion',label:'Configuración',icon:Settings2}] as const;
-export function AppShell({children}:{children:React.ReactNode}) {const pathname=useRouterState({select:s=>s.location.pathname});const navigate=useNavigate();const {period,setPeriod,firm,setFirm}=useWorkspace();const [panel,setPanel]=useState<'notifications'|'help'|'search'|'logout'|null>(null);const [query,setQuery]=useState('');const [read,setRead]=useState(false);const current=clients.find(c=>pathname.includes(`/clientes/${c.id}`));const section=navigation.find(n=>n.to!=='/'&&pathname.startsWith(n.to))?.label||'Dashboard';return <div className="app-shell"><aside className="sidebar"><Link to="/" className="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 7h12a9 9 0 0 1 0 18h-4v-6h4a3 3 0 0 0 0-6h-6v14H5z" fill="currentColor"/><path d="M23 5h4v9h-4z" fill="currentColor" opacity=".45"/></svg><span>proconta<span className="brand-dot">.</span></span><span className="version">v1</span></Link><div className="firm-switch"><div className="firm-avatar">DV</div><div><small>Tu despacho</small><select aria-label="Despacho" value={firm} onChange={e=>setFirm(e.target.value)}><option>{demo.firm}</option><option>Despacho DEMO Centro</option></select></div><ChevronsUpDown size={14}/></div><div className="nav-label">ESPACIO DE TRABAJO</div><nav>{navigation.map(n=><Button asChild variant="ghost" key={n.to} className={`nav-item ${(n.to==='/'?pathname==='/':pathname.startsWith(n.to))?'is-active':''}`}><Link to={n.to}><n.icon size={18}/><span>{n.label}</span>{'count' in n&&<span className="nav-count">{n.count}</span>}</Link></Button>)}</nav><div className="sidebar-bottom"><div className="help-block"><div><CircleHelp size={17}/><span>¿Necesitas ayuda?</span></div><p>Estamos para acompañarte.</p><Button variant="outline" size="sm" onClick={()=>setPanel('help')}>Centro de ayuda<ArrowMini/></Button></div><div className="user-block"><div className="avatar user-avatar">{demo.initials}</div><div><strong>{demo.user}</strong><small>Contadora · Administradora</small></div><Button variant="ghost" size="icon" title="Cerrar sesión" aria-label="Cerrar sesión" onClick={()=>setPanel('logout')}><LogOut size={16}/></Button></div></div></aside><div className="app-body"><header className="topbar"><div className="breadcrumb">Espacio de trabajo<span>/</span><strong>{section}</strong></div><div className="header-controls"><div className="context-select"><UsersRound size={15}/><select aria-label="Cliente" value={current?.id||'all'} onChange={e=>e.target.value==='all'?navigate({to:'/'}):navigate({to:'/clientes/$clientId',params:{clientId:e.target.value}})}><option value="all">Todos los clientes</option>{clients.map(c=><option value={c.id} key={c.id}>{c.name}</option>)}</select><ChevronDown size={12}/></div><div className="period-select"><span className="calendar-mark">▦</span><select aria-label="Periodo" value={period} onChange={e=>setPeriod(e.target.value)}><option>Septiembre 2026</option><option>Agosto 2026</option><option>Julio 2026</option></select><ChevronDown size={12}/></div><div className="header-divider"/><Button variant="ghost" size="icon" title="Buscar en ProConta" aria-label="Buscar en ProConta" onClick={()=>setPanel('search')}><Search/></Button><Button variant="ghost" size="icon" className="notification-button" title="Notificaciones" aria-label="Notificaciones" onClick={()=>setPanel('notifications')}><Bell/>{!read&&<span/>}</Button><div className="avatar top-avatar">{demo.initials}</div></div></header><main className="main-content">{children}</main><footer className="app-footer"><span><span className="live-dot"/> Entorno DEMO · Todos los datos son ficticios</span><span>ProConta lee y señala. Tú revisas y decides.</span></footer></div><Sheet open={panel!==null} onOpenChange={open=>!open&&setPanel(null)}><SheetContent className="workspace-sheet"><SheetHeader><SheetTitle>{panel==='notifications'?'Notificaciones':panel==='search'?'Buscar en ProConta':panel==='logout'?'Sesión de demostración':'Centro de ayuda'}</SheetTitle><SheetDescription>{panel==='logout'?'No hay una sesión real iniciada.':panel==='help'?'ProConta v1 · Contacto de demostración':'Espacio de trabajo · Datos ficticios'}</SheetDescription></SheetHeader>{panel==='notifications'&&<><Button variant="outline" className="mt-6" onClick={()=>setRead(true)}><Check/>Marcar como leídas</Button>{decisions.slice(0,3).map(d=><Link className="notification-row" to="/decisiones" key={d.id} onClick={()=>setPanel(null)}><CircleHelp size={18}/><div><strong>{d.title}</strong><p>{d.client} · {d.service}</p></div></Link>)}</>}{panel==='search'&&<div className="mt-6"><input className="field" aria-label="Buscar cliente o pantalla" placeholder="Buscar cliente o pantalla…" value={query} onChange={e=>setQuery(e.target.value)}/>{clients.filter(c=>(c.name+' '+c.industry).toLowerCase().includes(query.toLowerCase())).map(c=><Link className="notification-row" to="/clientes/$clientId" params={{clientId:c.id}} key={c.id} onClick={()=>setPanel(null)}><UsersRound size={18}/><div><strong>{c.name}</strong><p>{c.industry}</p></div></Link>)}</div>}{panel==='help'&&<div className="detail-section"><h3>Asistencia del despacho</h3><p>Los canales de contacto estarán disponibles en una próxima versión.</p><div className="notice">Esta versión utiliza exclusivamente datos de demostración.</div></div>}{panel==='logout'&&<div className="detail-section"><Button onClick={()=>setPanel(null)}><X/>Volver al espacio de trabajo</Button></div>}</SheetContent></Sheet></div>}
-function ArrowMini(){return <Command size={12}/>}
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import {
+  LayoutGrid,
+  UsersRound,
+  Workflow,
+  FolderOpen,
+  ClipboardCheck,
+  PackageCheck,
+  History,
+  Settings2,
+  ChevronsUpDown,
+  ChevronDown,
+  Bell,
+  Search,
+  LogOut,
+  CircleHelp,
+  Command,
+  X,
+  Check,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { demo, clients, decisions } from "@/lib/proconta/demo";
+import { useWorkspace } from "@/lib/proconta/context";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
+const navigation = [
+  { to: "/", label: "Dashboard", icon: LayoutGrid },
+  { to: "/clientes", label: "Clientes", icon: UsersRound },
+  { to: "/procesos", label: "Procesos", icon: Workflow },
+  { to: "/archivos", label: "Archivos", icon: FolderOpen },
+  { to: "/decisiones", label: "Decisiones pendientes", icon: ClipboardCheck, count: "12" },
+  { to: "/entregables", label: "Entregables", icon: PackageCheck },
+  { to: "/historial", label: "Historial / Auditoría", icon: History },
+  { to: "/configuracion", label: "Configuración", icon: Settings2 },
+] as const;
+export function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const { period, setPeriod, firm, setFirm } = useWorkspace();
+  const [panel, setPanel] = useState<"notifications" | "help" | "search" | "logout" | null>(null);
+  const [query, setQuery] = useState("");
+  const [read, setRead] = useState(false);
+  const current = clients.find((c) => pathname.includes(`/clientes/${c.id}`));
+  const section =
+    navigation.find((n) => n.to !== "/" && pathname.startsWith(n.to))?.label || "Dashboard";
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <Link to="/" className="brand">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M5 7h12a9 9 0 0 1 0 18h-4v-6h4a3 3 0 0 0 0-6h-6v14H5z" fill="currentColor" />
+            <path d="M23 5h4v9h-4z" fill="currentColor" opacity=".45" />
+          </svg>
+          <span>
+            proconta<span className="brand-dot">.</span>
+          </span>
+          <span className="version">v1</span>
+        </Link>
+        <div className="firm-switch">
+          <div className="firm-avatar">DV</div>
+          <div>
+            <small>Tu despacho</small>
+            <select aria-label="Despacho" value={firm} onChange={(e) => setFirm(e.target.value)}>
+              <option>{demo.firm}</option>
+              <option>Despacho DEMO Centro</option>
+            </select>
+          </div>
+          <ChevronsUpDown size={14} />
+        </div>
+        <div className="nav-label">ESPACIO DE TRABAJO</div>
+        <nav>
+          {navigation.map((n) => (
+            <Button
+              asChild
+              variant="ghost"
+              key={n.to}
+              className={`nav-item ${(n.to === "/" ? pathname === "/" : pathname.startsWith(n.to)) ? "is-active" : ""}`}
+            >
+              <Link to={n.to}>
+                <n.icon size={18} />
+                <span>{n.label}</span>
+                {"count" in n && <span className="nav-count">{n.count}</span>}
+              </Link>
+            </Button>
+          ))}
+        </nav>
+        <div className="sidebar-bottom">
+          <div className="help-block">
+            <div>
+              <CircleHelp size={17} />
+              <span>¿Necesitas ayuda?</span>
+            </div>
+            <p>Estamos para acompañarte.</p>
+            <Button variant="outline" size="sm" onClick={() => setPanel("help")}>
+              Centro de ayuda
+              <ArrowMini />
+            </Button>
+          </div>
+          <div className="user-block">
+            <div className="avatar user-avatar">{demo.initials}</div>
+            <div>
+              <strong>{demo.user}</strong>
+              <small>Contadora · Administradora</small>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Cerrar sesión"
+              aria-label="Cerrar sesión"
+              onClick={() => setPanel("logout")}
+            >
+              <LogOut size={16} />
+            </Button>
+          </div>
+        </div>
+      </aside>
+      <div className="app-body">
+        <header className="topbar">
+          <div className="breadcrumb">
+            Espacio de trabajo<span>/</span>
+            <strong>{section}</strong>
+          </div>
+          <div className="header-controls">
+            <div className="context-select">
+              <UsersRound size={15} />
+              <select
+                aria-label="Cliente"
+                value={current?.id || "all"}
+                onChange={(e) =>
+                  e.target.value === "all"
+                    ? navigate({ to: "/" })
+                    : navigate({ to: "/clientes/$clientId", params: { clientId: e.target.value } })
+                }
+              >
+                <option value="all">Todos los clientes</option>
+                {clients.map((c) => (
+                  <option value={c.id} key={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={12} />
+            </div>
+            <div className="period-select">
+              <span className="calendar-mark">▦</span>
+              <select
+                aria-label="Periodo"
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+              >
+                <option>Septiembre 2026</option>
+                <option>Agosto 2026</option>
+                <option>Julio 2026</option>
+              </select>
+              <ChevronDown size={12} />
+            </div>
+            <div className="header-divider" />
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Buscar en ProConta"
+              aria-label="Buscar en ProConta"
+              onClick={() => setPanel("search")}
+            >
+              <Search />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="notification-button"
+              title="Notificaciones"
+              aria-label="Notificaciones"
+              onClick={() => setPanel("notifications")}
+            >
+              <Bell />
+              {!read && <span />}
+            </Button>
+            <div className="avatar top-avatar">{demo.initials}</div>
+          </div>
+        </header>
+        <main className="main-content">{children}</main>
+        <footer className="app-footer">
+          <span>
+            <span className="live-dot" /> Entorno DEMO · Todos los datos son ficticios
+          </span>
+          <span>ProConta lee y señala. Tú revisas y decides.</span>
+        </footer>
+      </div>
+      <Sheet open={panel !== null} onOpenChange={(open) => !open && setPanel(null)}>
+        <SheetContent className="workspace-sheet">
+          <SheetHeader>
+            <SheetTitle>
+              {panel === "notifications"
+                ? "Notificaciones"
+                : panel === "search"
+                  ? "Buscar en ProConta"
+                  : panel === "logout"
+                    ? "Sesión de demostración"
+                    : "Centro de ayuda"}
+            </SheetTitle>
+            <SheetDescription>
+              {panel === "logout"
+                ? "No hay una sesión real iniciada."
+                : panel === "help"
+                  ? "ProConta v1 · Contacto de demostración"
+                  : "Espacio de trabajo · Datos ficticios"}
+            </SheetDescription>
+          </SheetHeader>
+          {panel === "notifications" && (
+            <>
+              <Button variant="outline" className="mt-6" onClick={() => setRead(true)}>
+                <Check />
+                Marcar como leídas
+              </Button>
+              {decisions.slice(0, 3).map((d) => (
+                <Link
+                  className="notification-row"
+                  to="/decisiones"
+                  key={d.id}
+                  onClick={() => setPanel(null)}
+                >
+                  <CircleHelp size={18} />
+                  <div>
+                    <strong>{d.title}</strong>
+                    <p>
+                      {d.client} · {d.service}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </>
+          )}
+          {panel === "search" && (
+            <div className="mt-6">
+              <input
+                className="field"
+                aria-label="Buscar cliente o pantalla"
+                placeholder="Buscar cliente o pantalla…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {clients
+                .filter((c) =>
+                  (c.name + " " + c.industry).toLowerCase().includes(query.toLowerCase()),
+                )
+                .map((c) => (
+                  <Link
+                    className="notification-row"
+                    to="/clientes/$clientId"
+                    params={{ clientId: c.id }}
+                    key={c.id}
+                    onClick={() => setPanel(null)}
+                  >
+                    <UsersRound size={18} />
+                    <div>
+                      <strong>{c.name}</strong>
+                      <p>{c.industry}</p>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+          )}
+          {panel === "help" && (
+            <div className="detail-section">
+              <h3>Asistencia del despacho</h3>
+              <p>Los canales de contacto estarán disponibles en una próxima versión.</p>
+              <div className="notice">
+                Esta versión utiliza exclusivamente datos de demostración.
+              </div>
+            </div>
+          )}
+          {panel === "logout" && (
+            <div className="detail-section">
+              <Button onClick={() => setPanel(null)}>
+                <X />
+                Volver al espacio de trabajo
+              </Button>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+}
+function ArrowMini() {
+  return <Command size={12} />;
+}

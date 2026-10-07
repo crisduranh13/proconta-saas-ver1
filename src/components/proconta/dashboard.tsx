@@ -1,9 +1,148 @@
-import { Link } from '@tanstack/react-router';
-import { UsersRound, ClipboardCheck, FileWarning, PackageCheck, ShieldAlert, ArrowUpRight, Plus, CircleAlert, Clock3, CircleCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { demo, activity } from '@/lib/proconta/demo';
-import { useWorkspace } from '@/lib/proconta/context';
-import { MetricCard, PageTitle } from './shared';
-import { Portfolio } from './portfolio';
-const icons=[UsersRound,ClipboardCheck,FileWarning,PackageCheck,ShieldAlert];
-export function Dashboard(){const {period}=useWorkspace();return <><PageTitle title="Dashboard" description="Todo tu despacho, bajo control." actions={<><span className="period-caption"><span className="live-dot"/>{period}</span><Button asChild><Link to="/clientes"> <Plus/>Nuevo cliente</Link></Button></>}/><div className="overview-label"><h2>Resumen del despacho</h2><span>Periodo activo <strong>{period}</strong></span></div><div className="metrics-grid five">{demo.metrics.map((m,i)=>{const Icon=icons[i];return <MetricCard key={m.label} {...m} icon={Icon&&<Icon size={17}/>}/>})}</div><div className="attention-banner"><div className="attention-symbol"><ShieldAlert size={21}/></div><div><strong>Hay asuntos que necesitan tu atención</strong><p>5 decisiones prioritarias y 2 controles con error antes de cerrar el periodo.</p></div><Button asChild variant="ghost" size="sm"><Link to="/decisiones">Revisar pendientes<ArrowUpRight/></Link></Button></div><Portfolio/><div className="dashboard-bottom"><section className="priority-section"><div className="section-heading"><h2>Prioridades del periodo</h2><Button asChild variant="ghost" size="sm"><Link to="/decisiones">Ver todas<ArrowUpRight/></Link></Button></div><Link to="/decisiones" className="priority-row"><span className="priority-icon tone-warning"><CircleAlert size={18}/></span><div><strong>Préstamos recibidos sin contrato</strong><small>Cliente A · IVA / ISR</small></div><span className="priority-tag">Requiere decisión</span><ArrowUpRight size={16}/></Link><Link to="/archivos" className="priority-row"><span className="priority-icon tone-danger"><FileWarning size={18}/></span><div><strong>Estado de cuenta incompleto</strong><small>Cliente A · Tarjeta BBVA</small></div><span className="priority-tag danger">Falta información</span><ArrowUpRight size={16}/></Link><Link to="/entregables" className="priority-row"><span className="priority-icon tone-danger"><ShieldAlert size={18}/></span><div><strong>Diferencia en el control del auxiliar</strong><small>Cliente D · Auxiliar contable</small></div><span className="priority-tag danger">Bloqueado</span><ArrowUpRight size={16}/></Link></section><section className="activity-section"><div className="section-heading"><h2>Actividad reciente</h2><Button asChild variant="ghost" size="sm"><Link to="/historial">Ver historial<ArrowUpRight/></Link></Button></div>{activity.map(a=><div className="activity-row" key={a.title}><div className={`activity-dot tone-${a.type}`}>{a.type==='success'?<CircleCheck size={15}/>:a.type==='info'?<Clock3 size={15}/>:<UsersRound size={15}/>}</div><div><strong>{a.title}</strong><small>{a.detail}</small></div><time>{a.time}</time></div>)}</section></div></>}
+import { Link } from "@tanstack/react-router";
+import {
+  UsersRound,
+  ClipboardCheck,
+  FileWarning,
+  PackageCheck,
+  ShieldAlert,
+  ArrowUpRight,
+  Plus,
+  CircleAlert,
+  Clock3,
+  CircleCheck,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { demo, activity } from "@/lib/proconta/demo";
+import { useWorkspace } from "@/lib/proconta/context";
+import { MetricCard, PageTitle } from "./shared";
+import { Portfolio } from "./portfolio";
+const icons = [UsersRound, ClipboardCheck, FileWarning, PackageCheck, ShieldAlert];
+export function Dashboard() {
+  const { period } = useWorkspace();
+  return (
+    <>
+      <PageTitle
+        title="Dashboard"
+        description="Todo tu despacho, bajo control."
+        actions={
+          <>
+            <span className="period-caption">
+              <span className="live-dot" />
+              {period}
+            </span>
+            <Button asChild>
+              <Link to="/clientes">
+                {" "}
+                <Plus />
+                Nuevo cliente
+              </Link>
+            </Button>
+          </>
+        }
+      />
+      <div className="overview-label">
+        <h2>Resumen del despacho</h2>
+        <span>
+          Periodo activo <strong>{period}</strong>
+        </span>
+      </div>
+      <div className="metrics-grid five">
+        {demo.metrics.map((m, i) => {
+          const Icon = icons[i];
+          return <MetricCard key={m.label} {...m} icon={Icon && <Icon size={17} />} />;
+        })}
+      </div>
+      <div className="attention-banner">
+        <div className="attention-symbol">
+          <ShieldAlert size={21} />
+        </div>
+        <div>
+          <strong>Hay asuntos que necesitan tu atención</strong>
+          <p>5 decisiones prioritarias y 2 controles con error antes de cerrar el periodo.</p>
+        </div>
+        <Button asChild variant="ghost" size="sm">
+          <Link to="/decisiones">
+            Revisar pendientes
+            <ArrowUpRight />
+          </Link>
+        </Button>
+      </div>
+      <Portfolio />
+      <div className="dashboard-bottom">
+        <section className="priority-section">
+          <div className="section-heading">
+            <h2>Prioridades del periodo</h2>
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/decisiones">
+                Ver todas
+                <ArrowUpRight />
+              </Link>
+            </Button>
+          </div>
+          <Link to="/decisiones" className="priority-row">
+            <span className="priority-icon tone-warning">
+              <CircleAlert size={18} />
+            </span>
+            <div>
+              <strong>Préstamos recibidos sin contrato</strong>
+              <small>Cliente A · IVA / ISR</small>
+            </div>
+            <span className="priority-tag">Requiere decisión</span>
+            <ArrowUpRight size={16} />
+          </Link>
+          <Link to="/archivos" className="priority-row">
+            <span className="priority-icon tone-danger">
+              <FileWarning size={18} />
+            </span>
+            <div>
+              <strong>Estado de cuenta incompleto</strong>
+              <small>Cliente A · Tarjeta BBVA</small>
+            </div>
+            <span className="priority-tag danger">Falta información</span>
+            <ArrowUpRight size={16} />
+          </Link>
+          <Link to="/entregables" className="priority-row">
+            <span className="priority-icon tone-danger">
+              <ShieldAlert size={18} />
+            </span>
+            <div>
+              <strong>Diferencia en el control del auxiliar</strong>
+              <small>Cliente D · Auxiliar contable</small>
+            </div>
+            <span className="priority-tag danger">Bloqueado</span>
+            <ArrowUpRight size={16} />
+          </Link>
+        </section>
+        <section className="activity-section">
+          <div className="section-heading">
+            <h2>Actividad reciente</h2>
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/historial">
+                Ver historial
+                <ArrowUpRight />
+              </Link>
+            </Button>
+          </div>
+          {activity.map((a) => (
+            <div className="activity-row" key={a.title}>
+              <div className={`activity-dot tone-${a.type}`}>
+                {a.type === "success" ? (
+                  <CircleCheck size={15} />
+                ) : a.type === "info" ? (
+                  <Clock3 size={15} />
+                ) : (
+                  <UsersRound size={15} />
+                )}
+              </div>
+              <div>
+                <strong>{a.title}</strong>
+                <small>{a.detail}</small>
+              </div>
+              <time>{a.time}</time>
+            </div>
+          ))}
+        </section>
+      </div>
+    </>
+  );
+}

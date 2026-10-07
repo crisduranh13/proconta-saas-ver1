@@ -1,5 +1,5 @@
 # ProConta v1
-- [ ] Define visual system and shared workspace shell.
-- [ ] Add centralized demo data and operational dashboard/client portfolio.
-- [ ] Add client workspace, reconciliation, decisions, files and receivables.
-- [ ] Connect navigation and simulated interactions; verify screens.
+- [x] Define visual system and shared workspace shell.
+- [x] Add centralized demo data and operational dashboard/client portfolio.
+- [x] Add client workspace, reconciliation, decisions, files and receivables.
+- [x] Connect navigation and simulated interactions; verify screens.
