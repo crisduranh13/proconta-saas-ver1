@@ -10,33 +10,176 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArchivosRouteImport } from './routes/archivos'
+import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as ConciliacionRouteImport } from './routes/conciliacion'
+import { Route as ConfiguracionRouteImport } from './routes/configuracion'
+import { Route as CuentasPorCobrarRouteImport } from './routes/cuentas-por-cobrar'
+import { Route as DecisionesRouteImport } from './routes/decisiones'
+import { Route as EntregablesRouteImport } from './routes/entregables'
+import { Route as HistorialRouteImport } from './routes/historial'
+import { Route as ProcesosRouteImport } from './routes/procesos'
+import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
+import { Route as ClientesClientIdRouteImport } from './routes/clientes.$clientId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArchivosRoute = ArchivosRouteImport.update({
+  id: '/archivos',
+  path: '/archivos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConciliacionRoute = ConciliacionRouteImport.update({
+  id: '/conciliacion',
+  path: '/conciliacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracionRoute = ConfiguracionRouteImport.update({
+  id: '/configuracion',
+  path: '/configuracion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CuentasPorCobrarRoute = CuentasPorCobrarRouteImport.update({
+  id: '/cuentas-por-cobrar',
+  path: '/cuentas-por-cobrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DecisionesRoute = DecisionesRouteImport.update({
+  id: '/decisiones',
+  path: '/decisiones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntregablesRoute = EntregablesRouteImport.update({
+  id: '/entregables',
+  path: '/entregables',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorialRoute = HistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcesosRoute = ProcesosRouteImport.update({
+  id: '/procesos',
+  path: '/procesos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientesIndexRoute = ClientesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClientesRoute,
+} as any)
+const ClientesClientIdRoute = ClientesClientIdRouteImport.update({
+  id: '/$clientId',
+  path: '/$clientId',
+  getParentRoute: () => ClientesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/archivos': typeof ArchivosRoute
+  '/clientes': typeof ClientesRouteWithChildren
+  '/conciliacion': typeof ConciliacionRoute
+  '/configuracion': typeof ConfiguracionRoute
+  '/cuentas-por-cobrar': typeof CuentasPorCobrarRoute
+  '/decisiones': typeof DecisionesRoute
+  '/entregables': typeof EntregablesRoute
+  '/historial': typeof HistorialRoute
+  '/procesos': typeof ProcesosRoute
+  '/clientes/$clientId': typeof ClientesClientIdRoute
+  '/clientes/': typeof ClientesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/archivos': typeof ArchivosRoute
+  '/conciliacion': typeof ConciliacionRoute
+  '/configuracion': typeof ConfiguracionRoute
+  '/cuentas-por-cobrar': typeof CuentasPorCobrarRoute
+  '/decisiones': typeof DecisionesRoute
+  '/entregables': typeof EntregablesRoute
+  '/historial': typeof HistorialRoute
+  '/procesos': typeof ProcesosRoute
+  '/clientes/$clientId': typeof ClientesClientIdRoute
+  '/clientes': typeof ClientesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/archivos': typeof ArchivosRoute
+  '/clientes': typeof ClientesRouteWithChildren
+  '/conciliacion': typeof ConciliacionRoute
+  '/configuracion': typeof ConfiguracionRoute
+  '/cuentas-por-cobrar': typeof CuentasPorCobrarRoute
+  '/decisiones': typeof DecisionesRoute
+  '/entregables': typeof EntregablesRoute
+  '/historial': typeof HistorialRoute
+  '/procesos': typeof ProcesosRoute
+  '/clientes/$clientId': typeof ClientesClientIdRoute
+  '/clientes/': typeof ClientesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/archivos'
+    | '/clientes'
+    | '/conciliacion'
+    | '/configuracion'
+    | '/cuentas-por-cobrar'
+    | '/decisiones'
+    | '/entregables'
+    | '/historial'
+    | '/procesos'
+    | '/clientes/$clientId'
+    | '/clientes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/archivos'
+    | '/conciliacion'
+    | '/configuracion'
+    | '/cuentas-por-cobrar'
+    | '/decisiones'
+    | '/entregables'
+    | '/historial'
+    | '/procesos'
+    | '/clientes/$clientId'
+    | '/clientes'
+  id:
+    | '__root__'
+    | '/'
+    | '/archivos'
+    | '/clientes'
+    | '/conciliacion'
+    | '/configuracion'
+    | '/cuentas-por-cobrar'
+    | '/decisiones'
+    | '/entregables'
+    | '/historial'
+    | '/procesos'
+    | '/clientes/$clientId'
+    | '/clientes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArchivosRoute: typeof ArchivosRoute
+  ClientesRoute: typeof ClientesRouteWithChildren
+  ConciliacionRoute: typeof ConciliacionRoute
+  ConfiguracionRoute: typeof ConfiguracionRoute
+  CuentasPorCobrarRoute: typeof CuentasPorCobrarRoute
+  DecisionesRoute: typeof DecisionesRoute
+  EntregablesRoute: typeof EntregablesRoute
+  HistorialRoute: typeof HistorialRoute
+  ProcesosRoute: typeof ProcesosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +191,111 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/archivos': {
+      id: '/archivos'
+      path: '/archivos'
+      fullPath: '/archivos'
+      preLoaderRoute: typeof ArchivosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conciliacion': {
+      id: '/conciliacion'
+      path: '/conciliacion'
+      fullPath: '/conciliacion'
+      preLoaderRoute: typeof ConciliacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracion': {
+      id: '/configuracion'
+      path: '/configuracion'
+      fullPath: '/configuracion'
+      preLoaderRoute: typeof ConfiguracionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cuentas-por-cobrar': {
+      id: '/cuentas-por-cobrar'
+      path: '/cuentas-por-cobrar'
+      fullPath: '/cuentas-por-cobrar'
+      preLoaderRoute: typeof CuentasPorCobrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/decisiones': {
+      id: '/decisiones'
+      path: '/decisiones'
+      fullPath: '/decisiones'
+      preLoaderRoute: typeof DecisionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entregables': {
+      id: '/entregables'
+      path: '/entregables'
+      fullPath: '/entregables'
+      preLoaderRoute: typeof EntregablesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historial': {
+      id: '/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof HistorialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/procesos': {
+      id: '/procesos'
+      path: '/procesos'
+      fullPath: '/procesos'
+      preLoaderRoute: typeof ProcesosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clientes/': {
+      id: '/clientes/'
+      path: '/'
+      fullPath: '/clientes/'
+      preLoaderRoute: typeof ClientesIndexRouteImport
+      parentRoute: typeof ClientesRoute
+    }
+    '/clientes/$clientId': {
+      id: '/clientes/$clientId'
+      path: '/$clientId'
+      fullPath: '/clientes/$clientId'
+      preLoaderRoute: typeof ClientesClientIdRouteImport
+      parentRoute: typeof ClientesRoute
+    }
   }
 }
 
+interface ClientesRouteChildren {
+  ClientesClientIdRoute: typeof ClientesClientIdRoute
+  ClientesIndexRoute: typeof ClientesIndexRoute
+}
+
+const ClientesRouteChildren: ClientesRouteChildren = {
+  ClientesClientIdRoute: ClientesClientIdRoute,
+  ClientesIndexRoute: ClientesIndexRoute,
+}
+
+const ClientesRouteWithChildren = ClientesRoute._addFileChildren(
+  ClientesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArchivosRoute: ArchivosRoute,
+  ClientesRoute: ClientesRouteWithChildren,
+  ConciliacionRoute: ConciliacionRoute,
+  ConfiguracionRoute: ConfiguracionRoute,
+  CuentasPorCobrarRoute: CuentasPorCobrarRoute,
+  DecisionesRoute: DecisionesRoute,
+  EntregablesRoute: EntregablesRoute,
+  HistorialRoute: HistorialRoute,
+  ProcesosRoute: ProcesosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

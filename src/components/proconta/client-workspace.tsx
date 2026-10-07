@@ -1,0 +1,235 @@
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Download,
+  CircleCheck,
+  FolderOpen,
+  ClipboardCheck,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { clients, clientSummary, serviceDemoRows, deliverables, money } from "@/lib/proconta/demo";
+import { useWorkspace } from "@/lib/proconta/context";
+import { PageTitle, MetricCard, StatusBadge, TableWrap } from "./shared";
+import { FilesPage } from "./files";
+import { ReconciliationPage } from "./reconciliation";
+import { DecisionsPage } from "./decisions";
+import { ReceivablesPage } from "./receivables";
+const tabs = [
+  "Resumen",
+  "Archivos",
+  "Conciliación",
+  "IVA / ISR",
+  "Auxiliar",
+  "Facturas emitidas",
+  "Cuentas por cobrar",
+  "Decisiones",
+  "Entregables",
+];
+export function ClientWorkspace({ clientId }: { clientId: string }) {
+  const client = clients.find((c) => c.id === clientId);
+  const [tab, setTab] = useState("Resumen");
+  const { period } = useWorkspace();
+  if (!client)
+    return (
+      <PageTitle
+        title="Cliente no encontrado"
+        description="Este cliente no está disponible en la cartera de demostración."
+      />
+    );
+  const services = [
+    "Conciliación",
+    "IVA / ISR",
+    "Auxiliar contable",
+    "Facturas emitidas",
+    "Cuentas por cobrar",
+  ];
+  return (
+    <>
+      <Link to="/clientes" className="back-link">
+        <ArrowLeft size={14} />
+        Cartera de clientes
+      </Link>
+      <PageTitle
+        title={client.name}
+        description={`${client.industry} · ${client.type.startsWith("PF") ? "Persona Física" : "Persona Moral"} · Régimen ${client.type.split("·")[1]}`}
+        actions={
+          <span className="client-period">
+            <span className="live-dot" />
+            {period}
+          </span>
+        }
+      />
+      <div className="workspace-tabs" role="tablist">
+        {tabs.map((t) => (
+          <Button
+            key={t}
+            role="tab"
+            aria-selected={tab === t}
+            variant="ghost"
+            className={tab === t ? "tab-active" : ""}
+            onClick={() => setTab(t)}
+          >
+            {t}
+            {t === "Decisiones" && <span>{client.pending}</span>}
+          </Button>
+        ))}
+      </div>
+      {tab === "Resumen" ? (
+        <>
+          <div className="metrics-grid four">
+            <MetricCard
+              label="Avance del periodo"
+              value={`${client.progress}%`}
+              note="Servicios completados"
+            />
+            <MetricCard
+              label="Archivos del periodo"
+              value={clientSummary.files}
+              note={clientSummary.filesNote}
+            />
+            <MetricCard
+              label="Decisiones pendientes"
+              value={String(client.pending)}
+              note="Pendientes de tu criterio"
+              kind="warning"
+            />
+            <MetricCard
+              label="Control del periodo"
+              value={client.pending ? "Pendiente" : "$0.00"}
+              note={client.pending ? "Cierre pendiente de revisión" : "Control conciliado"}
+              kind={client.pending ? "warning" : "success"}
+            />
+          </div>
+          <section className="service-section">
+            <div className="section-heading">
+              <h2>Servicios del periodo</h2>
+              <span className="muted">{period}</span>
+            </div>
+            {services.map((s, i) => (
+              <div className="service-row" key={s}>
+                <div className="service-icon">
+                  <ClipboardCheck size={20} />
+                </div>
+                <div>
+                  <strong>{s}</strong>
+                  <small>
+                    {client.statuses[i] === "No aplica"
+                      ? "Servicio no activo para este cliente"
+                      : clientSummary.updated}
+                  </small>
+                </div>
+                <StatusBadge status={client.statuses[i] ?? "No aplica"} />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  title={`Abrir ${s}`}
+                  onClick={() => setTab(s === "Auxiliar contable" ? "Auxiliar" : s)}
+                >
+                  <ChevronRight />
+                </Button>
+              </div>
+            ))}
+          </section>
+          <div className="notice mt-6">
+            <CircleCheck size={17} /> Datos ficticios del cliente · Las acciones de esta versión son
+            de demostración.
+          </div>
+        </>
+      ) : tab === "Archivos" ? (
+        <FilesPage embedded />
+      ) : tab === "Conciliación" ? (
+        <ReconciliationPage embedded />
+      ) : tab === "Decisiones" ? (
+        <DecisionsPage client={client.name} embedded />
+      ) : tab === "Cuentas por cobrar" ? (
+        <ReceivablesPage embedded />
+      ) : tab === "Entregables" ? (
+        <section>
+          <PageTitle
+            title="Entregables del periodo"
+            description="Archivos y controles de salida."
+          />
+          <TableWrap>
+            <thead>
+              <tr>
+                <th>Archivo</th>
+                <th>Control</th>
+                <th>Estado</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {deliverables
+                .filter((d) => d.client === client.name)
+                .map((d) => (
+                  <tr key={d.name}>
+                    <td>{d.name}</td>
+                    <td>{d.control === null ? "Pendiente" : money(d.control)}</td>
+                    <td>
+                      <StatusBadge status={d.status} />
+                    </td>
+                    <td>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={d.control !== 0}
+                        onClick={() => downloadDemo(d.name)}
+                      >
+                        <Download />
+                        Descargar DEMO
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </TableWrap>
+        </section>
+      ) : (
+        <section className="service-section">
+          <PageTitle
+            title={tab}
+            description={`Información de demostración · ${client.name} · ${period}`}
+          />
+          <TableWrap>
+            <thead>
+              <tr>
+                <th>Concepto</th>
+                <th>Importe DEMO</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(serviceDemoRows[tab] || []).map(([label, value]) => (
+                <tr key={label}>
+                  <td>{label}</td>
+                  <td className="numeric">{value}</td>
+                  <td>
+                    <StatusBadge status={tab === "IVA / ISR" ? "Requiere decisión" : "Completo"} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </TableWrap>
+          <div className="notice mt-6">
+            Importes ilustrativos. No se han realizado cálculos contables ni fiscales.
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+export function downloadDemo(name: string) {
+  const blob = new Blob(
+    ["PROCONTA · DEMO\nArchivo ficticio. No es un entregable contable.\n" + name],
+    { type: "text/plain;charset=utf-8" },
+  );
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name.replace(/\.xlsx$/, ".demo.txt");
+  a.click();
+  URL.revokeObjectURL(url);
+}
