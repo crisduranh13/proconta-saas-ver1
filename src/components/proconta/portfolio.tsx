@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { clients, demo } from "@/lib/proconta/demo";
 import { useWorkspace } from "@/lib/proconta/context";
-import { SearchInput, FilterButton, TableWrap, StatusBadge, EmptyState } from "./shared";
+import { SearchInput, FilterButton, StatusBadge, EmptyState } from "./shared";
 export function Portfolio({ full = false }: { full?: boolean }) {
   const [query, setQuery] = useState("");
   const [attention, setAttention] = useState(false);
@@ -61,10 +61,11 @@ export function Portfolio({ full = false }: { full?: boolean }) {
           </div>
         </div>
       </div>
-      <TableWrap>
+      <div className="table-scroll portfolio-table-scroll">
+        <table className="data-table">
         <thead>
           <tr>
-            <th className="check-cell">
+            <th className="check-cell sticky-check">
               <input
                 type="checkbox"
                 aria-label="Seleccionar todos los clientes"
@@ -75,13 +76,13 @@ export function Portfolio({ full = false }: { full?: boolean }) {
                 }
               />
             </th>
-            <th>Cliente</th>
-            <th>Tipo</th>
-            <th>Conciliación</th>
-            <th>IVA / ISR</th>
-            <th>Auxiliar</th>
-            <th>Emitidas</th>
-            <th>CxC</th>
+            <th className="sticky-client">Cliente</th>
+            <th className="sticky-type">Tipo</th>
+            <th className="col-service">Conciliación</th>
+            <th className="col-service">IVA / ISR</th>
+            <th className="col-service">Auxiliar</th>
+            <th className="col-service">Emitidas</th>
+            <th className="col-service">CxC</th>
             <th className="text-center">Pendientes</th>
             <th />
           </tr>
@@ -89,15 +90,15 @@ export function Portfolio({ full = false }: { full?: boolean }) {
         <tbody>
           {filtered.map((c) => (
             <tr key={c.id}>
-              <td className="check-cell">
+              <td className="check-cell sticky-check">
                 <input
                   type="checkbox"
                   className="client-check"
                   aria-label={`Seleccionar ${c.name}`}
                 />
               </td>
-              <td>
-                <Link className="client-cell" to="/clientes/$clientId" params={{ clientId: c.id }}>
+              <td className="sticky-client">
+                <Link className="client-cell" title={c.name} to="/clientes/$clientId" params={{ clientId: c.id }}>
                   <div className={`avatar avatar-${c.tone}`}>{c.initials}</div>
                   <div>
                     <strong>{c.name}</strong>
@@ -105,11 +106,11 @@ export function Portfolio({ full = false }: { full?: boolean }) {
                   </div>
                 </Link>
               </td>
-              <td>
+              <td className="sticky-type">
                 <span className="type-label">{c.type}</span>
               </td>
               {c.statuses.map((s, i) => (
-                <td key={i}>
+                <td key={i} className="col-service">
                   <StatusBadge compact status={s} />
                 </td>
               ))}
@@ -128,7 +129,8 @@ export function Portfolio({ full = false }: { full?: boolean }) {
             </tr>
           ))}
         </tbody>
-      </TableWrap>
+      </table>
+      </div>
       {!filtered.length && <EmptyState />}
       <div className="table-footer">
         <span>
