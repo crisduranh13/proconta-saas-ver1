@@ -18,7 +18,9 @@ import { Route as CuentasPorCobrarRouteImport } from './routes/cuentas-por-cobra
 import { Route as DecisionesRouteImport } from './routes/decisiones'
 import { Route as EntregablesRouteImport } from './routes/entregables'
 import { Route as HistorialRouteImport } from './routes/historial'
+import { Route as IvaIsrRouteImport } from './routes/iva-isr'
 import { Route as ProcesosRouteImport } from './routes/procesos'
+import { Route as SalidasVsCfdiRouteImport } from './routes/salidas-vs-cfdi'
 import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
 import { Route as ClientesClientIdRouteImport } from './routes/clientes.$clientId'
 
@@ -67,9 +69,19 @@ const HistorialRoute = HistorialRouteImport.update({
   path: '/historial',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IvaIsrRoute = IvaIsrRouteImport.update({
+  id: '/iva-isr',
+  path: '/iva-isr',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProcesosRoute = ProcesosRouteImport.update({
   id: '/procesos',
   path: '/procesos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalidasVsCfdiRoute = SalidasVsCfdiRouteImport.update({
+  id: '/salidas-vs-cfdi',
+  path: '/salidas-vs-cfdi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClientesIndexRoute = ClientesIndexRouteImport.update({
@@ -93,7 +105,9 @@ export interface FileRoutesByFullPath {
   '/decisiones': typeof DecisionesRoute
   '/entregables': typeof EntregablesRoute
   '/historial': typeof HistorialRoute
+  '/iva-isr': typeof IvaIsrRoute
   '/procesos': typeof ProcesosRoute
+  '/salidas-vs-cfdi': typeof SalidasVsCfdiRoute
   '/clientes/$clientId': typeof ClientesClientIdRoute
   '/clientes/': typeof ClientesIndexRoute
 }
@@ -106,7 +120,9 @@ export interface FileRoutesByTo {
   '/decisiones': typeof DecisionesRoute
   '/entregables': typeof EntregablesRoute
   '/historial': typeof HistorialRoute
+  '/iva-isr': typeof IvaIsrRoute
   '/procesos': typeof ProcesosRoute
+  '/salidas-vs-cfdi': typeof SalidasVsCfdiRoute
   '/clientes/$clientId': typeof ClientesClientIdRoute
   '/clientes': typeof ClientesIndexRoute
 }
@@ -121,7 +137,9 @@ export interface FileRoutesById {
   '/decisiones': typeof DecisionesRoute
   '/entregables': typeof EntregablesRoute
   '/historial': typeof HistorialRoute
+  '/iva-isr': typeof IvaIsrRoute
   '/procesos': typeof ProcesosRoute
+  '/salidas-vs-cfdi': typeof SalidasVsCfdiRoute
   '/clientes/$clientId': typeof ClientesClientIdRoute
   '/clientes/': typeof ClientesIndexRoute
 }
@@ -137,7 +155,9 @@ export interface FileRouteTypes {
     | '/decisiones'
     | '/entregables'
     | '/historial'
+    | '/iva-isr'
     | '/procesos'
+    | '/salidas-vs-cfdi'
     | '/clientes/$clientId'
     | '/clientes/'
   fileRoutesByTo: FileRoutesByTo
@@ -150,7 +170,9 @@ export interface FileRouteTypes {
     | '/decisiones'
     | '/entregables'
     | '/historial'
+    | '/iva-isr'
     | '/procesos'
+    | '/salidas-vs-cfdi'
     | '/clientes/$clientId'
     | '/clientes'
   id:
@@ -164,7 +186,9 @@ export interface FileRouteTypes {
     | '/decisiones'
     | '/entregables'
     | '/historial'
+    | '/iva-isr'
     | '/procesos'
+    | '/salidas-vs-cfdi'
     | '/clientes/$clientId'
     | '/clientes/'
   fileRoutesById: FileRoutesById
@@ -179,7 +203,9 @@ export interface RootRouteChildren {
   DecisionesRoute: typeof DecisionesRoute
   EntregablesRoute: typeof EntregablesRoute
   HistorialRoute: typeof HistorialRoute
+  IvaIsrRoute: typeof IvaIsrRoute
   ProcesosRoute: typeof ProcesosRoute
+  SalidasVsCfdiRoute: typeof SalidasVsCfdiRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -247,11 +273,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistorialRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/iva-isr': {
+      id: '/iva-isr'
+      path: '/iva-isr'
+      fullPath: '/iva-isr'
+      preLoaderRoute: typeof IvaIsrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/procesos': {
       id: '/procesos'
       path: '/procesos'
       fullPath: '/procesos'
       preLoaderRoute: typeof ProcesosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/salidas-vs-cfdi': {
+      id: '/salidas-vs-cfdi'
+      path: '/salidas-vs-cfdi'
+      fullPath: '/salidas-vs-cfdi'
+      preLoaderRoute: typeof SalidasVsCfdiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clientes/': {
@@ -295,7 +335,9 @@ const rootRouteChildren: RootRouteChildren = {
   DecisionesRoute: DecisionesRoute,
   EntregablesRoute: EntregablesRoute,
   HistorialRoute: HistorialRoute,
+  IvaIsrRoute: IvaIsrRoute,
   ProcesosRoute: ProcesosRoute,
+  SalidasVsCfdiRoute: SalidasVsCfdiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,0 +1,38 @@
+{
+ "caso": "B",
+ "entradas": [
+  "01_entradas/caso_B/movimientos_BBVA_PYME.xlsx",
+  "01_entradas/caso_B/movimientos_BBVA_personal.xlsx",
+  "01_entradas/caso_B/movimientos_TDC.xlsx",
+  "01_entradas/caso_B/cfdi_recibidos_DocDigitales_sep2026.xlsx"
+ ],
+ "por_estatus": {
+  "CONCILIADO": {
+   "salidas": 52,
+   "importe": 108050.17
+  },
+  "CONCILIADO C/OBS": {
+   "salidas": 7,
+   "importe": 16771.99
+  },
+  "PARCIAL": {
+   "salidas": 2,
+   "importe": 16525.26
+  },
+  "SIN CFDI": {
+   "salidas": 44,
+   "importe": 24349.96
+  },
+  "NO REQUIERE": {
+   "salidas": 35,
+   "importe": 148602.6
+  }
+ },
+ "total_salidas": {
+  "n": 140,
+  "importe": 314299.98
+ },
+ "pct_importe_que_requiere_cfdi_y_lo_tiene": 0.753,
+ "nivel_de_prueba": "Solo totales por estatus (no hay script de referencia de este caso). Tolerancia sugerida: ±2 salidas por estatus mientras el despacho no valide.",
+ "nota": "Resultado de referencia de Claude; el despacho no lo ha validado formalmente. Movimientos al 26/09 (PYME) y 28/09 (personal)."
+}

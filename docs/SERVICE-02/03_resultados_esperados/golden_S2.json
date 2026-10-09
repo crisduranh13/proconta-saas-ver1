@@ -1,0 +1,88 @@
+{
+ "caso": "B septiembre 2026 (persona física 612, flujo de efectivo)",
+ "entradas": [
+  "01_entradas/movimientos_BBVA_PYME.xlsx",
+  "01_entradas/movimientos_BBVA_personal.xlsx",
+  "01_entradas/movimientos_TDC.xlsx",
+  "01_entradas/cfdi_recibidos_DocDigitales_sep2026.xlsx",
+  "01_entradas/cfdi_emitidos_DocDigitales_sep2026.xlsx",
+  "01_entradas/cfdi_mes_anterior_pendientes_ago2026.xlsx"
+ ],
+ "ingresos": {
+  "por_clasificacion": {
+   "INGRESO": {
+    "depositos": 8,
+    "importe": 193001.2
+   },
+   "INGRESO SIN CFDI": {
+    "depositos": 10,
+    "importe": 129710.0
+   },
+   "NO ES INGRESO": {
+    "depositos": 26,
+    "importe": 119003.12
+   }
+  },
+  "total_depositos": {
+   "n": 44,
+   "importe": 441714.32
+  },
+  "cobrado_con_iva": 322711.2,
+  "base_sin_iva": 278199.31,
+  "iva_trasladado": 44511.89,
+  "regla": "base = cobrado/1.16 sobre el total, no renglón por renglón"
+ },
+ "emitidos": {
+  "estatus": {
+   "COBRADO": 6,
+   "COBRADO VÍA REP": 2,
+   "PENDIENTE DE COBRO": 1
+  }
+ },
+ "recibidos": {
+  "por_estatus": {
+   "DEDUCIBLE": {
+    "cfdi": 71,
+    "subtotal": 117445.87,
+    "iva": 17962.36
+   },
+   "NO APLICA": {
+    "cfdi": 5,
+    "subtotal": 1355.59,
+    "iva": 216.9
+   },
+   "NO DEDUCIBLE": {
+    "cfdi": 6,
+    "subtotal": 51133.89,
+    "iva": 5638.71
+   },
+   "OTRO PERIODO": {
+    "cfdi": 1,
+    "subtotal": 336.75,
+    "iva": 53.88
+   },
+   "PENDIENTE": {
+    "cfdi": 5,
+    "subtotal": 6560.28,
+    "iva": 1050.72
+   }
+  },
+  "total_cfdi": 88
+ },
+ "iva": {
+  "trasladado": 44511.89,
+  "acreditable": 17962.36,
+  "a_pagar": 26549.53
+ },
+ "isr": {
+  "ingresos": 278199.31,
+  "deducciones": 117445.87,
+  "base_gravable": 160753.44,
+  "limite_inferior": 141880.67,
+  "cuota_fija": 37009.69,
+  "pct_excedente": 0.34,
+  "isr_del_mes": 43426.43,
+  "nota": "Tarifa mensual 2026 sobre la base del mes. El pago provisional legal es acumulado (PENDIENTE DE VALIDAR)."
+ },
+ "correccion": "Versión corregida: F_StaCeciliaM-11422 y G-51405 (agosto) usan el IVA real del CFDI (15.04 y 32.27), no total/1.16. El Excel entregado al despacho decía acreditable 17,963.17 e IVA a pagar 26,548.72."
+}

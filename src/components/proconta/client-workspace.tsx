@@ -17,10 +17,14 @@ import { FilesPage } from "./files";
 import { ReconciliationPage } from "./reconciliation";
 import { DecisionsPage } from "./decisions";
 import { ReceivablesPage } from "./receivables";
+import { IssuedInvoicesPage } from "./issued-invoices";
+import { OutflowsCfdiPage } from "./outflows-cfdi";
+import { TaxesMonthPage } from "./taxes-month";
 const tabs = [
   "Resumen",
   "Archivos",
   "Conciliación",
+  "Salidas vs CFDI",
   "IVA / ISR",
   "Auxiliar",
   "Facturas emitidas",
@@ -145,7 +149,13 @@ export function ClientWorkspace({ clientId }: { clientId: string }) {
       ) : tab === "Decisiones" ? (
         <DecisionsPage client={client.name} embedded />
       ) : tab === "Cuentas por cobrar" ? (
-        <ReceivablesPage embedded />
+        <ReceivablesPage key={client.id} embedded clientName={client.name} />
+      ) : tab === "Salidas vs CFDI" ? (
+        <OutflowsCfdiPage key={client.id} embedded clientName={client.name} />
+      ) : tab === "IVA / ISR" ? (
+        <TaxesMonthPage key={client.id} embedded clientName={client.name} />
+      ) : tab === "Facturas emitidas" ? (
+        <IssuedInvoicesPage key={`${client.id}:${period}`} clientName={client.name} />
       ) : tab === "Entregables" ? (
         <section>
           <PageTitle

@@ -5,7 +5,7 @@ export const Route = createFileRoute("/cuentas-por-cobrar")({
   head: () =>
     pageHead(
       "Cuentas por cobrar",
-      "Saldos y antigüedad de la cartera de compradores. Datos ficticios DEMO.",
+      "Facturas pendientes de cobro y antigüedad de saldos a partir del auxiliar de clientes.",
     ),
   component: ReceivablesPage,
 });

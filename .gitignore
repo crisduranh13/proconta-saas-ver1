@@ -30,3 +30,31 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Accounting source files and generated deliverables must stay out of Git.
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+*.csv
+*.tsv
+*.ods
+*.pdf
+*.doc
+*.docx
+*.xml
+*.ofx
+*.qfx
+*.zip
+*.7z
+*.rar
+
+# Service 3 fixtures may contain transaction-level amounts even after anonymization.
+docs/SERVICE-03/01_entradas/*
+!docs/SERVICE-03/01_entradas/.gitkeep
+docs/SERVICE-03/02_referencia_manual/*
+!docs/SERVICE-03/02_referencia_manual/INSTRUCCIONES_CONTADOR.md
+docs/SERVICE-03/03_resultados_esperados/*
+!docs/SERVICE-03/03_resultados_esperados/.gitkeep
+docs/SERVICE-03/04_referencia_motor/salida_regenerada/
+docs/SERVICE-03/SERVICE-03-ARCHIVOS-A-TRANSFERIR.md

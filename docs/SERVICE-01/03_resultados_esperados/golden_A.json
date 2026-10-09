@@ -1,0 +1,52 @@
+{
+ "caso": "A",
+ "entradas": [
+  "01_entradas/caso_A/estado_cuenta_BBVA_sep2026.pdf",
+  "01_entradas/caso_A/cfdi_recibidos_DocDigitales_sep2026.xlsx"
+ ],
+ "validacion_banco": {
+  "saldo_inicial": 91568.16,
+  "cargos_n": 252,
+  "cargos_importe": 1938713.49,
+  "abonos_n": 17,
+  "abonos_importe": 2034729.6,
+  "saldo_final": 187584.27,
+  "movimientos": 269
+ },
+ "por_estatus": {
+  "CONCILIADO": {
+   "salidas": 28,
+   "importe": 63412.69
+  },
+  "CONCILIADO C/OBS": {
+   "salidas": 71,
+   "importe": 408996.04
+  },
+  "NO REQUIERE": {
+   "salidas": 10,
+   "importe": 443963.05
+  },
+  "PARCIAL": {
+   "salidas": 64,
+   "importe": 559171.27
+  },
+  "SIN CFDI": {
+   "salidas": 79,
+   "importe": 463170.44
+  }
+ },
+ "total_salidas": {
+  "n": 252,
+  "importe": 1938713.49
+ },
+ "cfdi": {
+  "activos_ingreso": 180,
+  "con_salida": 93,
+  "sin_salida": 87,
+  "rep": 20,
+  "egreso": 3,
+  "cancelados": 1
+ },
+ "pct_importe_que_requiere_cfdi_y_lo_tiene": 0.316,
+ "nota": "Resultado de referencia de Claude. El despacho no lo ha validado formalmente."
+}
